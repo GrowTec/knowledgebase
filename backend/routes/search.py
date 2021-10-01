@@ -17,7 +17,7 @@ router = APIRouter(tags=["search"])
 async def search_knowledge(query_string: str):
     response_data: List[Dict[str, str]] = []
 
-    query = Q('multi_match', description=query_string) or Q('match', title=query_string)
+    query = Q('multi_match', query=query_string, fields=['title', 'description', 'resolution'])
     search = Search(index='knowledge-index').query(query)
     search_response = search.execute()
     for hit in search_response:
